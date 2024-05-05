@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <RootNamespace>Azure_Sync_Queue_DB_Function</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.17.5" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Sql" Version="3.0.534" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
+    <PackageReference Include="NewtonSoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+</Project>
