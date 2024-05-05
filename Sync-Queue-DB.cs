@@ -26,7 +26,7 @@ namespace Moonman.Function
 
 
         [FunctionName("Sync_Queue_DB")]
-        public async Task Run([TimerTrigger("0 */7 * * * *")]TimerInfo myTimer, ILogger log)
+        public async Task Run([TimerTrigger("0 */40 * * * *")]TimerInfo myTimer, ILogger log)
         {
             if (myTimer.IsPastDue) {
                 log.LogInformation("Timer is running late!");
