@@ -40,7 +40,10 @@ namespace Moonman.Function
                 IAsyncEnumerable<ServiceBusReceivedMessage> messages = serviceBusReceiver.ReceiveMessagesAsync();
                 int count = 0;
 
-                
+
+
+                SqlConnection connection = new(System.Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process));
+                connection.Open();
                 await foreach (var message in messages) {
                     count++;
                     Order order = JsonConvert.DeserializeObject<Order>(message.Body.ToString());
@@ -50,16 +53,17 @@ namespace Moonman.Function
 
                     string insertQuery = "INSERT INTO Orders (OrderId, Quantity, UnitPrice) VALUES (@Value1, @Value2, @Value3)";
 
-                    using (SqlConnection connection = new(System.Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process))) {
-                        connection.Open();
+                        
                         SqlCommand sqlCommand = new (insertQuery, connection);
                         sqlCommand.Parameters.AddWithValue("@Value1", order.OrderId);
                         sqlCommand.Parameters.AddWithValue("@Value2", order.Quantity);
                         sqlCommand.Parameters.AddWithValue("@Value3", order.UnitPrice);
                         using SqlDataReader reader = sqlCommand.ExecuteReader();
-                    }
+                        
+                    
                     
                 }
+                connection.Close();
 
                 log.LogInformation($"Successfully picked {count} messages from queue and pushed to DB!");
             }
